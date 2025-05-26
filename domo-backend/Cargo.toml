@@ -1,0 +1,18 @@
+[workspace]
+members = [
+  "src/game_core",
+  "src/storage",
+  "src/token_bridge",
+  "src/api_server",
+]
+resolver = "2"
+
+[workspace.dependencies]
+solana-sdk = "2.1.0"
+serde = { version = "1.0", features = ["derive"] }
+sqlx = { version = "0.8.5", features = ["runtime-tokio-native-tls", "postgres", "uuid", "time", "bigdecimal", "macros", "chrono"] }
+uuid = { version = "1.1", features = ["serde", "v4"] }
+thiserror = "2.0.12"
+anyhow = "1.0"
+log = "0.4.27"
+lazy_static = "1.4.0"

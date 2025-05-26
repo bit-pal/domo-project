@@ -1,0 +1,22 @@
+[package]
+name = "game_core"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+actix-web = "4.0"
+async-trait = "0.1.88"
+bigdecimal = { version = "0.4.8", features = ["serde"] }
+chrono = { version = "0.4.41", features = ["serde"] }
+time = { version = "0.3.41", features = ["serde"] }
+
+serde = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true }
+sqlx = { workspace = true }
+anyhow = { workspace = true }
+log = { workspace = true }
+lazy_static = { workspace = true }

@@ -1,0 +1,11 @@
+[package]
+name = "token_bridge"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+solana-sdk = { workspace = true }
+async-trait = "0.1"
+thiserror = { workspace = true }
+uuid = { workspace = true }
+serde = { workspace = true }
