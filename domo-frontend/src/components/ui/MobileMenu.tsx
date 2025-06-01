@@ -1,5 +1,5 @@
 import { Link, animateScroll as scroll } from 'react-scroll'
-import CLoseIcon from '../svg/CLoseIcon'
+import CLoseIcon from '../icons/CLoseIcon'
 import { FC } from 'react'
 const mobileMenu = [
 	{

@@ -1,6 +1,6 @@
 import React from 'react'
 import { styles } from '../../styles/styles'
-import Button from '../../shared/ui/Button'
+import Button from '../../components/ui/Button'
 import gif1 from '../../assets/gif/Domokun_Angel_Anim_3.gif'
 import gif2 from '../../assets/gif/Domokun_Angry_Anim.gif'
 

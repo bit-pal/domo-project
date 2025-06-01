@@ -1,6 +1,6 @@
 import React from 'react'
 import { styles } from '../../styles/styles'
-import Button from '../../shared/ui/Button'
+import Button from '../ui/Button'
 import PartyGif from '../../assets/gif/Domokun_Party_Anim.gif'
 
 const Footer = () => {

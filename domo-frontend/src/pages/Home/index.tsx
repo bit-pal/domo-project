@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
-import Header from '../shared/components/Header'
-import Footer from '../shared/components/Footer'
-import About from './components/About'
-import Tokenomics from './components/Tokenomics'
-import Roadmap from './components/Roadmap'
-import Docs from './components/Docs'
+import Header from '../../components/common/Header'
+import Footer from '../../components/common/Footer'
+import About from './About'
+import Tokenomics from './Tokenomics'
+import Roadmap from './Roadmap'
+import Docs from './Docs'
 import Aos from 'aos'
 import 'aos/dist/aos.css'
-import MainBlock from './components/MainBlock'
+import MainBlock from './MainBlock'
 
 interface HomeProps {
 	onLoad: () => void // ожидаем функцию onLoad
