@@ -1,7 +1,7 @@
 import React from 'react'
-import { styles } from '../../styles/styles'
-import Button from '../../components/ui/Button'
-import phone from '../../assets/phone.png'
+import { styles } from '../../../styles/styles'
+import Button from '../../../components/ui/Button'
+import phone from '../../../assets/phone.png'
 
 const Roadmap = () => {
 	return (

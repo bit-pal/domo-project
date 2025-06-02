@@ -1,12 +1,12 @@
 import React from 'react'
-import { styles } from '../../styles/styles'
-import MessageIcon from '../../components/icons/MessageIcon'
-import RockGif from '../../assets/gif/Domokun_Rock_Anim.gif'
-import Button from '../../components/ui/Button'
-import StepOneIcon from '../../components/icons/StepOneIcon'
-import BorderIcon from '../../components/icons/BorderIcon'
-import StepTwoIcon from '../../components/icons/StepTwoIcon'
-import StepThreeIcon from '../../components/icons/StepThreeIcon'
+import { styles } from '../../../styles/styles'
+import MessageIcon from '../../../components/icons/MessageIcon'
+import RockGif from '../../../assets/gif/Domokun_Rock_Anim.gif'
+import Button from '../../../components/ui/Button'
+import StepOneIcon from '../../../components/icons/StepOneIcon'
+import BorderIcon from '../../../components/icons/BorderIcon'
+import StepTwoIcon from '../../../components/icons/StepTwoIcon'
+import StepThreeIcon from '../../../components/icons/StepThreeIcon'
 
 const roadmapData = [
 	{

@@ -1,11 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
-import About from './About'
-import Tokenomics from './Tokenomics'
-import Roadmap from './Roadmap'
-import Docs from './Docs'
+import { useWallet } from '@solana/wallet-adapter-react'
+import About from './components/About'
+import Tokenomics from './components/Tokenomics'
+import Roadmap from './components/Roadmap'
+import Docs from './components/Docs'
 import Aos from 'aos'
 import 'aos/dist/aos.css'
-import MainBlock from './MainBlock'
+import MainBlock from './components/MainBlock'
+import Dashboard from '../Dashboard'
 
 interface HomeProps {
 	onLoad: () => void // ожидаем функцию onLoad
@@ -13,6 +15,7 @@ interface HomeProps {
 
 const Home: FC<HomeProps> = ({ onLoad }) => {
 	const [hasScrolled, setHasScrolled] = useState(false)
+	const { publicKey } = useWallet()
 
 	const handleScroll = () => {
 		if (window.scrollY > 0) {
@@ -77,6 +80,10 @@ const Home: FC<HomeProps> = ({ onLoad }) => {
 			animatedClassName: 'aos-animate',
 		})
 	}, [])
+
+	if (publicKey) {
+		return <Dashboard />
+	}
 
 	return (
 		<div>

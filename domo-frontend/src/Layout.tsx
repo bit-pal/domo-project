@@ -62,7 +62,7 @@ function Layout() {
 					<Route path="/blog" element={<Blog />} />
 				</Routes>
 			</main>
-			<Footer />
+			{/* <Footer /> */}
 		</div>
 	)
 }

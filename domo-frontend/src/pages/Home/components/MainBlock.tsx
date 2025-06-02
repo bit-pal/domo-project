@@ -1,7 +1,7 @@
-import Marquees from '../../components/common/Marquees'
-import { styles } from '../../styles/styles'
-import Button from '../../components/ui/Button'
-import DomocunCinemaGif from '../../assets/gif/Domokun_Cinema_Anim.gif'
+import Marquees from '../../../components/common/Marquees'
+import { styles } from '../../../styles/styles'
+import Button from '../../../components/ui/Button'
+import DomocunCinemaGif from '../../../assets/gif/Domokun_Cinema_Anim.gif'
 
 const MainBlock = () => {
 	return (
