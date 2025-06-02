@@ -7,15 +7,18 @@ import BurgerIcon from '../icons/BurgerIcon'
 import MobileMenu from '../ui/MobileMenu'
 import WalletButton from '../auth/WalletButton'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { FaCog, FaBell } from 'react-icons/fa'
+import { FaCog, FaBell, FaBars } from 'react-icons/fa'
 import SsolIcon from '../icons/SsolIcon'
 import SdomoIcon from '../icons/SdomoIcon'
+import Sidebar from './Sidebar'
 
 interface HeaderProps {
-	className?: string
+	className?: string;
+	onToggleSidebar?: () => void;
+	isSidebarOpen?: boolean;
 }
 
-const Header: FC<HeaderProps> = ({ className }) => {
+const Header: FC<HeaderProps> = ({ className, onToggleSidebar, isSidebarOpen }) => {
 	const [mobMenu, setMobMenu] = useState(false)
 	const { publicKey } = useWallet()
 
@@ -25,35 +28,42 @@ const Header: FC<HeaderProps> = ({ className }) => {
 
 	return (
 		<header className={`left-0 fixed right-0 z-20 ${className}`}>
-			<div className={`${styles.container} px-2 flex items-center justify-between h-16`}>
-				{/* Mobile Menu */}
-				<MobileMenu
-					customStyle={`${mobMenu ? 'translate-x-0' : '-translate-x-full'}`}
-					setMobMenu={setMobMenu}
-				/>
+			{/* Absolute positioned toggle button */}
+			{publicKey && (
+				<button 
+					onClick={onToggleSidebar}
+					className="absolute left-3 top-1/2 -translate-y-1/2 p-2 hover:bg-white/10 text-white z-50"
+				>
+					<FaBars className="w-5 h-5" />
+				</button>
+			)}
 
+			<div className={`${styles.container} px-4 h-16 flex items-center justify-between`}>
 				{/* Center section - Navigation and Balances */}
 				<div className="hidden md:flex items-center gap-8">
-					<NavigationMenu />
+					{/* Show NavigationMenu only when wallet is NOT connected */}
+					{!publicKey && <NavigationMenu />}
 					
-					{/* Token Balances */}
-					<div className="flex items-center gap-6">
-						{/* SSOL Balance */}
-						<div className="flex items-center gap-2">
-							<SsolIcon className="w-6 h-6 text-yellow-400" />
-							<span className="font-medium text-white">{ssolBalance} SSOL</span>
-						</div>
+					{/* Token Balances - only show when wallet is connected */}
+					{publicKey && (
+						<div className="flex items-center gap-6">
+							{/* SSOL Balance */}
+							<div className="flex items-center gap-2">
+								<SsolIcon className="w-6 h-6 text-yellow-400" />
+								<span className="font-medium text-white">{ssolBalance} SSOL</span>
+							</div>
 
-						{/* SDOMO Balance */}
-						<div className="flex items-center gap-2">
-							<SdomoIcon className="w-6 h-6 text-purple-400" />
-							<span className="font-medium text-white">{sdomoBalance} SDOMO</span>
+							{/* SDOMO Balance */}
+							<div className="flex items-center gap-2">
+								<SdomoIcon className="w-6 h-6 text-purple-400" />
+								<span className="font-medium text-white">{sdomoBalance} SDOMO</span>
+							</div>
 						</div>
-					</div>
+					)}
 				</div>
 
 				{/* Right Section - Wallet and User Controls */}
-				<div className="flex items-center gap-4">
+				<div className="flex items-center gap-4 ml-auto">
 					{/* START PLAYING Button */}
 					<div>
 						<Button
@@ -87,6 +97,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
 					)}
 				</div>
 			</div>
+			{publicKey && <Sidebar isOpen={isSidebarOpen} />}
 		</header>
 	)
 }

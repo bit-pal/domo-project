@@ -1,6 +1,4 @@
 import React, { FC, useEffect, useState } from 'react'
-import Header from '../../components/common/Header'
-import Footer from '../../components/common/Footer'
 import About from './About'
 import Tokenomics from './Tokenomics'
 import Roadmap from './Roadmap'
@@ -81,23 +79,15 @@ const Home: FC<HomeProps> = ({ onLoad }) => {
 	}, [])
 
 	return (
-		<>
-			<div>
-				<Header
-					className={
-						hasScrolled ? 'bg-maroon shadow-lg py-5' : 'bg-transparent py-11'
-					}
-				/>
-				<main>
-					<MainBlock />
-					<About />
-					<Docs />
-					<Tokenomics />
-					<Roadmap />
-				</main>
-				<Footer />
-			</div>
-		</>
+		<div>
+			<main>
+				<MainBlock />
+				<About />
+				<Docs />
+				<Tokenomics />
+				<Roadmap />
+			</main>
+		</div>
 	)
 }
 
