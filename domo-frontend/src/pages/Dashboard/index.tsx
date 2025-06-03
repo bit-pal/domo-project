@@ -3,6 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import BaseInfo from './components/BaseInfo';
 import EmployeeSlots from './components/EmployeeSlots';
 import Invitations from './components/Invitations';
+import Chat from '../../components/chat/Chat';
 
 const Dashboard: React.FC = () => {
   const { publicKey } = useWallet();
@@ -18,6 +19,7 @@ const Dashboard: React.FC = () => {
         <EmployeeSlots />
         <Invitations />
       </div>
+      <Chat />
     </div>
   );
 };

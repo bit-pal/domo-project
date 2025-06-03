@@ -16,13 +16,13 @@ import '@solana/wallet-adapter-react-ui/styles.css'
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<BrowserRouter>
-			<ConnectionProvider endpoint={endpoint}>
-				<WalletProvider wallets={wallets} autoConnect>
-					<WalletModalProvider>
-						<Layout />
-					</WalletModalProvider>
-				</WalletProvider>
-			</ConnectionProvider>
+		<ConnectionProvider endpoint={endpoint}>
+			<WalletProvider wallets={wallets} autoConnect>
+				<WalletModalProvider>
+					<Layout />
+				</WalletModalProvider>
+			</WalletProvider>
+		</ConnectionProvider>
 		</BrowserRouter>
 	</React.StrictMode>
 )
