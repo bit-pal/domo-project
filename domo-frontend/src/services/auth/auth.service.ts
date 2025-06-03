@@ -1,7 +1,13 @@
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import bs58 from 'bs58';
+import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const api = axios.create({
+  baseURL: import.meta.env.BACKEND_API_URL || 'http://localhost:8080',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 interface NonceResponse {
   msg: {
@@ -17,20 +23,8 @@ interface LoginResponse {
 export class AuthService {
   static async getNonce(wallet: string): Promise<string> {
     try {
-      const response = await fetch(`${API_URL}/auth/nonce`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ wallet }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to get nonce');
-      }
-
-      const data: NonceResponse = await response.json();
-      return data.msg.nonce;
+      const response = await api.post<NonceResponse>('/auth/nonce', { wallet });
+      return response.data.msg.nonce;
     } catch (error) {
       console.error('Error getting nonce:', error);
       throw error;
@@ -62,32 +56,25 @@ export class AuthService {
     try {
       console.log('Sending login request with:', { wallet, signature, nonce });
       
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ wallet, signature, nonce }),
+      const response = await api.post<{ msg: LoginResponse }>('/auth/login', {
+        wallet,
+        signature,
+        nonce,
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Login error response:', errorData);
-        throw new Error(errorData.error || 'Invalid signature verify');
-      }
-
-      const data = await response.json();
-      console.log('Login response:', data);
-
-      if (!data.msg?.jwt) {
+      if (!response.data.msg?.jwt) {
         throw new Error('No JWT token in response');
       }
 
       return {
-        jwt: data.msg.jwt,
-        expiresAt: data.msg.expires_at
+        jwt: response.data.msg.jwt,
+        expiresAt: response.data.msg.expiresAt,
       };
     } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Login error response:', error.response.data);
+        throw new Error(error.response.data.error || 'Invalid signature verify');
+      }
       console.error('Error logging in:', error);
       throw error;
     }
@@ -103,7 +90,6 @@ export class AuthService {
 
       // 2. Get nonce and sign it
       const nonce = await this.getNonce(publicKey);
-
       const signature = await this.signMessage(wallet, nonce);
 
       // 3. Login with the signature
