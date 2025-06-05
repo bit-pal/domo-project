@@ -7,10 +7,13 @@ import BurgerIcon from '../icons/BurgerIcon'
 import MobileMenu from '../ui/MobileMenu'
 import WalletButton from '../auth/WalletButton'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { FaCog, FaBell, FaBars } from 'react-icons/fa'
+import { FaUser, FaCog, FaBell, FaBars } from 'react-icons/fa'
 import SsolIcon from '../icons/SsolIcon'
 import SdomoIcon from '../icons/SdomoIcon'
 import Sidebar from './Sidebar'
+import NotificationsDropdown from '../ui/NotificationsDropdown'
+import SettingsDropdown from '../ui/SettingsDropdown'
+import UserAvatar from '../ui/UserAvatar'
 
 interface HeaderProps {
 	className?: string;
@@ -20,11 +23,20 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({ className, onToggleSidebar, isSidebarOpen }) => {
 	const [mobMenu, setMobMenu] = useState(false)
+	const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
+	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+	const [isUserAvatarOpen, setIsUserAvatarOpen] = useState(false)
 	const { publicKey } = useWallet()
 
 	// Placeholder balances - these will come from your backend later
 	const ssolBalance = "0.00"
 	const sdomoBalance = "0.00"
+
+	const closeAllDropdowns = () => {
+		setIsNotificationsOpen(false);
+		setIsSettingsOpen(false);
+		setIsUserAvatarOpen(false);
+	};
 
 	return (
 		<header className={`left-0 fixed right-0 z-20 ${className}`}>
@@ -80,24 +92,72 @@ const Header: FC<HeaderProps> = ({ className, onToggleSidebar, isSidebarOpen }) 
 					{publicKey && (
 						<>
 							{/* Notifications */}
-							<button className="p-2 hover:bg-white/10 rounded-full hidden md:flex">
-								<FaBell className="w-5 h-5 text-white" />
-							</button>
+							<div className="relative">
+								<button 
+									className="p-2 hover:bg-white/10 rounded-full hidden md:flex"
+									onClick={() => {
+										setIsNotificationsOpen(!isNotificationsOpen);
+										setIsSettingsOpen(false);
+										setIsUserAvatarOpen(false);
+									}}
+								>
+									<FaBell className="w-5 h-5 text-white" />
+								</button>
+								<NotificationsDropdown 
+									isOpen={isNotificationsOpen}
+									onClose={() => setIsNotificationsOpen(false)}
+								/>
+							</div>
 
 							{/* Settings */}
-							<button className="p-2 hover:bg-white/10 rounded-full hidden md:flex">
-								<FaCog className="w-5 h-5 text-white" />
-							</button>
+							<div className="relative">
+								<button 
+									className="p-2 hover:bg-white/10 rounded-full hidden md:flex"
+									onClick={() => {
+										setIsSettingsOpen(!isSettingsOpen);
+										setIsNotificationsOpen(false);
+										setIsUserAvatarOpen(false);
+									}}
+								>
+									<FaCog className="w-5 h-5 text-white" />
+								</button>
+								<SettingsDropdown 
+									isOpen={isSettingsOpen}
+									onClose={() => setIsSettingsOpen(false)}
+								/>
+							</div>
 
 							{/* User Avatar */}
-							<div className="w-8 h-8 rounded-full bg-gray-800 border-2 border-white hidden md:block">
-								{/* Avatar image will go here */}
+							<div className="relative">
+								<button 
+									className="p-2 hover:bg-white/10 rounded-full hidden md:flex"
+									onClick={() => {
+										setIsSettingsOpen(false);
+										setIsNotificationsOpen(false);
+										setIsUserAvatarOpen(!isUserAvatarOpen);
+									}}
+								>
+									<FaUser className="w-4 h-4 text-white" />
+								</button>
+								<UserAvatar 
+									publicKey={publicKey.toString()}
+									isOpen={isUserAvatarOpen}
+									onClose={() => setIsUserAvatarOpen(false)}
+								/>
 							</div>
 						</>
 					)}
 				</div>
 			</div>
 			{publicKey && <Sidebar isOpen={isSidebarOpen} />}
+
+			{/* Click outside handler */}
+			{(isNotificationsOpen || isSettingsOpen || isUserAvatarOpen) && (
+				<div 
+					className="fixed inset-0 z-40"
+					onClick={closeAllDropdowns}
+				/>
+			)}
 		</header>
 	)
 }
