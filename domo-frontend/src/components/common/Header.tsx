@@ -7,13 +7,15 @@ import BurgerIcon from '../icons/BurgerIcon'
 import MobileMenu from '../ui/MobileMenu'
 import WalletButton from '../auth/WalletButton'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { FaUser, FaCog, FaBell, FaBars } from 'react-icons/fa'
+import { FaUser, FaCog, FaBell, FaBars, FaPlus } from 'react-icons/fa'
 import SsolIcon from '../icons/SsolIcon'
 import SdomoIcon from '../icons/SdomoIcon'
 import Sidebar from './Sidebar'
 import NotificationsDropdown from '../ui/NotificationsDropdown'
 import SettingsDropdown from '../ui/SettingsDropdown'
 import UserAvatar from '../ui/UserAvatar'
+import { useBalance } from '../../hooks/useBalance'
+import DepositModal from '../modals/DepositModal'
 
 interface HeaderProps {
 	className?: string;
@@ -26,16 +28,18 @@ const Header: FC<HeaderProps> = ({ className, onToggleSidebar, isSidebarOpen }) 
 	const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 	const [isUserAvatarOpen, setIsUserAvatarOpen] = useState(false)
+	const [isDepositModalOpen, setIsDepositModalOpen] = useState(false)
 	const { publicKey } = useWallet()
-
-	// Placeholder balances - these will come from your backend later
-	const ssolBalance = "0.00"
-	const sdomoBalance = "0.00"
+	const { ssolBalance, sdomoBalance, isLoading, refetch } = useBalance()
 
 	const closeAllDropdowns = () => {
 		setIsNotificationsOpen(false);
 		setIsSettingsOpen(false);
 		setIsUserAvatarOpen(false);
+	};
+
+	const handleCloseDepositModal = () => {
+		setIsDepositModalOpen(false);
 	};
 
 	return (
@@ -62,13 +66,23 @@ const Header: FC<HeaderProps> = ({ className, onToggleSidebar, isSidebarOpen }) 
 							{/* SSOL Balance */}
 							<div className="flex items-center gap-2">
 								<SsolIcon className="w-6 h-6 text-yellow-400" />
-								<span className="font-medium text-white">{ssolBalance} SSOL</span>
+								<span className={`font-medium text-white ${isLoading ? 'opacity-50' : ''}`}>
+									{ssolBalance} SSOL
+								</span>
 							</div>
 
 							{/* SDOMO Balance */}
 							<div className="flex items-center gap-2">
 								<SdomoIcon className="w-6 h-6 text-purple-400" />
-								<span className="font-medium text-white">{sdomoBalance} SDOMO</span>
+								<span className={`font-medium text-white ${isLoading ? 'opacity-50' : ''}`}>
+									{sdomoBalance} SDOMO
+								</span>
+								<button
+									onClick={() => setIsDepositModalOpen(true)}
+									className="p-1 hover:bg-white/10 rounded-full transition-colors"
+								>
+									<FaPlus className="w-3 h-3 text-green-400" />
+								</button>
 							</div>
 						</div>
 					)}
@@ -158,6 +172,13 @@ const Header: FC<HeaderProps> = ({ className, onToggleSidebar, isSidebarOpen }) 
 					onClick={closeAllDropdowns}
 				/>
 			)}
+
+			{/* Deposit Modal */}
+			<DepositModal
+				isOpen={isDepositModalOpen}
+				onClose={handleCloseDepositModal}
+				onSuccess={refetch}
+			/>
 		</header>
 	)
 }

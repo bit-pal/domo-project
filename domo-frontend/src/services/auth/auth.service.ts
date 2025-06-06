@@ -1,13 +1,7 @@
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import bs58 from 'bs58';
 import axios from 'axios';
-
-const api = axios.create({
-  baseURL: import.meta.env.BACKEND_API_URL || 'http://localhost:8080',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+import api from '../api';
 
 interface NonceResponse {
   msg: {
@@ -54,8 +48,6 @@ export class AuthService {
 
   static async login(wallet: string, signature: string, nonce: string): Promise<LoginResponse> {
     try {
-      console.log('Sending login request with:', { wallet, signature, nonce });
-      
       const response = await api.post<{ msg: LoginResponse }>('/auth/login', {
         wallet,
         signature,
