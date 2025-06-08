@@ -2,37 +2,36 @@ import React from 'react';
 import Modal from '../ui/Modal';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 
-interface ChangeProfessionModalProps {
+interface UpgradeBaseLevelModalProps {
   isOpen: boolean;
   onClose: () => void;
-  employeeType: string;
+  currentBaseLevel: number;
   cost: number;
-  cooldownHours: number;
   onConfirm: () => void;
 }
 
-const ChangeProfessionModal: React.FC<ChangeProfessionModalProps> = ({
+const UpgradeBaseLevelModal: React.FC<UpgradeBaseLevelModalProps> = ({
   isOpen,
   onClose,
-  employeeType,
+  currentBaseLevel,
   cost,
-  cooldownHours,
   onConfirm
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Change Profession">
+    <Modal isOpen={isOpen} onClose={onClose} title="Upgrade Base Level">
       <div className="space-y-4">
         <div className="text-gray-300">
-          <p>Current profession: <span className="text-white font-medium">{employeeType}</span></p>
-          <p className="mt-2">Cost to change: <span className="text-white font-medium">{cost} $DOMO</span></p>
+          <p>Current base level: <span className="text-white font-medium">{currentBaseLevel}</span></p>
+          <p>New base level: <span className="text-white font-medium">{currentBaseLevel + 1}</span></p>
+          <p className="mt-4">Cost to upgrade: <span className="text-white font-medium">{cost} $DOMO</span></p>
         </div>
 
         <div className="bg-yellow-900/20 border border-yellow-700/50 rounded-lg p-4">
           <div className="flex items-start">
             <ExclamationTriangleIcon className="h-5 w-5 text-yellow-500 mt-0.5 mr-2" />
             <div className="text-yellow-500 text-sm">
-              <p>Changing profession will put this employee on a {cooldownHours}-hour cooldown.</p>
-              <p className="mt-1">During cooldown, the employee will not generate any income.</p>
+              <p>Upgrading base level will increase the maximum level for all employees.</p>
+              <p className="mt-1">This action cannot be undone.</p>
             </div>
           </div>
         </div>
@@ -48,7 +47,7 @@ const ChangeProfessionModal: React.FC<ChangeProfessionModalProps> = ({
             onClick={onConfirm}
             className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
           >
-            Confirm Change
+            Confirm Upgrade
           </button>
         </div>
       </div>
@@ -56,4 +55,4 @@ const ChangeProfessionModal: React.FC<ChangeProfessionModalProps> = ({
   );
 };
 
-export default ChangeProfessionModal; 
+export default UpgradeBaseLevelModal; 

@@ -1,16 +1,29 @@
 import React, { useState } from 'react';
 import { HomeIcon } from '@heroicons/react/24/solid';
 import ClaimSafeModal from '../../../components/modals/ClaimSafeModal';
+import UpgradeBaseLevelModal from '../../../components/modals/UpgradeBaseLevelModal';
 
 interface BaseInfoProps {}
 
 const BaseInfo: React.FC<BaseInfoProps> = () => {
   const [isClaimModalOpen, setIsClaimModalOpen] = useState(false);
+  const [isUpgradeBaseLevelModalOpen, setIsUpgradeBaseLevelModalOpen] = useState(false);
+  const [baseLevel, setBaseLevel] = useState(3); // Example base level
   const safeAmount = 0.18; // Example amount
 
   const handleClaimConfirm = () => {
     // Handle claim logic here
     setIsClaimModalOpen(false);
+  };
+
+  const handleUpgradeBaseLevel = () => {
+    setIsUpgradeBaseLevelModalOpen(true);
+  };
+
+  const handleConfirmBaseUpgrade = async () => {
+    // Handle upgrade logic here
+    setBaseLevel(prev => prev + 1);
+    setIsUpgradeBaseLevelModalOpen(false);
   };
 
   const formatTokenAmount = (amount: number) => {
@@ -35,9 +48,12 @@ const BaseInfo: React.FC<BaseInfoProps> = () => {
           <div className="text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
               <span className="text-gray-300">BASE LEVEL:</span>
-              <span className="text-blue-400 font-medium">3</span>
+              <span className="text-blue-400 font-medium">{baseLevel}</span>
             </div>
-            <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full transition-colors">
+            <button 
+              onClick={handleUpgradeBaseLevel}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full transition-colors"
+            >
               Upgrade Base
             </button>
           </div>
@@ -78,6 +94,14 @@ const BaseInfo: React.FC<BaseInfoProps> = () => {
         onClose={() => setIsClaimModalOpen(false)}
         amount={safeAmount}
         onConfirm={handleClaimConfirm}
+      />
+
+      <UpgradeBaseLevelModal
+        isOpen={isUpgradeBaseLevelModalOpen}
+        onClose={() => setIsUpgradeBaseLevelModalOpen(false)}
+        currentBaseLevel={baseLevel}
+        cost={100} // Example cost, should come from configuration or API
+        onConfirm={handleConfirmBaseUpgrade}
       />
     </>
   );
